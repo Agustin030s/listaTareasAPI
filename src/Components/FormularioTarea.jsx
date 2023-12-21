@@ -8,9 +8,19 @@ const FormularioTarea = () => {
   const [tarea, setTarea] = useState("");
   const [listaTareas, setListaTareas] = useState([]);
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    //guardar el state tarea en arrayTareas
+    // ... -> operador spread
+    //[...listaTareas, tarea] realiza una copia del array original y luego al final me agrega la tarea
+    setListaTareas([...listaTareas, tarea]);
+    //limpiar el formulario
+    setTarea('');
+  };
+
   return (
     <section>
-      <Form>
+      <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3 d-flex" controlId="inputTarea">
           <Form.Control
             type="text"
