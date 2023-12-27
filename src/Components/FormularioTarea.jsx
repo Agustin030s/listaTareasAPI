@@ -1,12 +1,19 @@
 import { Button, Form } from "react-bootstrap";
 import ListaTareas from "./ListaTareas";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const FormularioTarea = () => {
   // [nombre del state, funcion que cambiara en state] = useState(valor inicial);
   //Este estado es para el input, cada input debe tener un state.
   const [tarea, setTarea] = useState("");
-  const [listaTareas, setListaTareas] = useState([]);
+  const tareasLocalStorage = JSON.parse(localStorage.getItem('listaTareas')) || [];
+  const [listaTareas, setListaTareas] = useState(tareasLocalStorage);
+
+  //Para ciclo de vida de un componente, para montaje y actualización
+  useEffect(() => {
+    console.log('usando useEffect');
+    localStorage.setItem('listaTareas', JSON.stringify(listaTareas));
+  }, [listaTareas]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
