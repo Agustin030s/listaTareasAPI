@@ -11,7 +11,6 @@ const FormularioTarea = () => {
 
   //Para ciclo de vida de un componente, para montaje y actualización
   useEffect(() => {
-    console.log('usando useEffect');
     localStorage.setItem('listaTareas', JSON.stringify(listaTareas));
   }, [listaTareas]);
 
