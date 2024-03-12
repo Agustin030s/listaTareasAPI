@@ -1,5 +1,14 @@
 const URI_TAREA = import.meta.env.VITE_API_TAREA;
 
+export const obtenerTareaAPI = async () =>{
+    try {
+        const respuesta = await fetch(URI_TAREA);
+        return respuesta;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export const crearTareaAPI = async (tareaNueva) => {
   try {
     const respuesta = await fetch(URI_TAREA, {

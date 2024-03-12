@@ -1,8 +1,8 @@
 import { Button, Form } from "react-bootstrap";
 import ListaTareas from "./ListaTareas";
 import { useForm } from "react-hook-form";
-import { crearTareaAPI } from "../helpers/queries";
-import { useState } from "react";
+import { crearTareaAPI, obtenerTareaAPI } from "../helpers/queries";
+import { useEffect, useState } from "react";
 
 const FormularioTarea = () => {
   const [tareas, setTareas] = useState([]);
@@ -15,13 +15,27 @@ const FormularioTarea = () => {
     setValue,
   } = useForm();
 
+  useEffect(() => {
+    obtenerTareas();
+  }, []);
+
   const onSubmit = async (tareaNueva) => {
     const respuesta = await crearTareaAPI(tareaNueva);
-    if(respuesta.status === 201){
+    if (respuesta.status === 201) {
       alert("producto creado con exito");
       reset();
-    }else{
+    } else {
       alert("no se pudo crear el producto");
+    }
+  };
+
+  const obtenerTareas = async () => {
+    const respuesta = await obtenerTareaAPI();
+    if (respuesta.status === 200) {
+      const datos = await respuesta.json();
+      setTareas(datos);
+    } else {
+      alert("ocurrio un error");
     }
   };
 
@@ -53,7 +67,7 @@ const FormularioTarea = () => {
           {errors.descripcion?.message}
         </Form.Text>
       </Form>
-      <ListaTareas></ListaTareas>
+      <ListaTareas listaTareas={tareas}></ListaTareas>
     </section>
   );
 };
