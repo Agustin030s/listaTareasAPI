@@ -1,8 +1,12 @@
 import { Button, Form } from "react-bootstrap";
 import ListaTareas from "./ListaTareas";
 import { useForm } from "react-hook-form";
+import { crearTareaAPI } from "../helpers/queries";
+import { useState } from "react";
 
 const FormularioTarea = () => {
+  const [tareas, setTareas] = useState([]);
+
   const {
     register,
     handleSubmit,
@@ -11,8 +15,14 @@ const FormularioTarea = () => {
     setValue,
   } = useForm();
 
-  const onSubmit = () => {
-    console.log("desde el onsubmit");
+  const onSubmit = async (tareaNueva) => {
+    const respuesta = await crearTareaAPI(tareaNueva);
+    if(respuesta.status === 201){
+      alert("producto creado con exito");
+      reset();
+    }else{
+      alert("no se pudo crear el producto");
+    }
   };
 
   return (
