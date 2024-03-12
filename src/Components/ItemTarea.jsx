@@ -1,9 +1,9 @@
 import { Button, ListGroup } from "react-bootstrap";
 
-const ItemTarea = ({ tarea, borrarTarea }) => {
+const ItemTarea = () => {
   return (
     <ListGroup.Item className="d-flex justify-content-between align-items-center">
-      {tarea}
+      Realizar el maquetado de un proyecto
       <div className="d-flex justify-content-center align-items-center flex-wrap">
         <Button
           variant="warning"

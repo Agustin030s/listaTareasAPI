@@ -4,13 +4,8 @@ import ItemTarea from "./ItemTarea";
 const ListaTareas = ({ listaTareas, borrarTarea }) => {
   return (
     <ListGroup>
-      {listaTareas.map((tarea, index) => (
-        <ItemTarea
-          key={index}
-          tarea={tarea}
-          borrarTarea={borrarTarea}
-        ></ItemTarea>
-      ))}
+      <ItemTarea></ItemTarea>
+      <ItemTarea></ItemTarea>
     </ListGroup>
   );
 };
