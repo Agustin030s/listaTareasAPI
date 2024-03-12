@@ -9,6 +9,15 @@ export const obtenerTareaAPI = async () =>{
     }
 }
 
+export const obtenerTareaPorIdAPI = async (id) =>{
+    try {
+        const respuesta = await fetch(`${URI_TAREA}/${id}`);
+        return respuesta;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export const crearTareaAPI = async (tareaNueva) => {
   try {
     const respuesta = await fetch(URI_TAREA, {

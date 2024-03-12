@@ -5,7 +5,7 @@ import { crearTareaAPI, obtenerTareaAPI } from "../helpers/queries";
 import { useEffect, useState } from "react";
 
 const FormularioTarea = () => {
-  const [tareas, setTareas] = useState([]);
+  const [listaTareas, setListaTareas] = useState([]);
 
   const {
     register,
@@ -33,7 +33,7 @@ const FormularioTarea = () => {
     const respuesta = await obtenerTareaAPI();
     if (respuesta.status === 200) {
       const datos = await respuesta.json();
-      setTareas(datos);
+      setListaTareas(datos);
     } else {
       alert("ocurrio un error");
     }
@@ -67,7 +67,7 @@ const FormularioTarea = () => {
           {errors.descripcion?.message}
         </Form.Text>
       </Form>
-      <ListaTareas listaTareas={tareas}></ListaTareas>
+      <ListaTareas listaTareas={listaTareas}></ListaTareas>
     </section>
   );
 };
