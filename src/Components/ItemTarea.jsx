@@ -1,15 +1,31 @@
 import { Button, ListGroup } from "react-bootstrap";
 import {
   borrarTareaAPI,
+  editarTareaAPI,
   obtenerTareaAPI,
   obtenerTareaPorIdAPI,
 } from "../helpers/queries";
 import Swal from "sweetalert2";
 
-const ItemTarea = ({ tarea, setListaTareas }) => {
-  const obtenerTareaId = async (id) => {
-    const respuesta = await obtenerTareaPorIdAPI(id);
-    console.log(await respuesta.json());
+const ItemTarea = ({ tarea, setListaTareas, setEditar, setId, setValue, setTextoBoton }) => {
+  const editarTarea = async () => {
+    Swal.fire({
+      title: "Estás seguro que deseas editar está tarea?",
+      text: "Editaras el contenido de la tarea",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Editar",
+      cancelButtonText: "Cancelar",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        setEditar(true);
+        setId(tarea.id);
+      setTextoBoton("Editar");
+        setValue("descripcion", tarea.descripcion);
+      }
+    });
   };
 
   const borrarTarea = async (id) => {
@@ -47,7 +63,7 @@ const ItemTarea = ({ tarea, setListaTareas }) => {
         <Button
           variant="warning"
           className="mx-md-1 mb-2 mb-md-0"
-          onClick={() => obtenerTareaId(tarea.id)}
+          onClick={() => editarTarea(tarea, tarea.id)}
         >
           <i className="bi bi-pencil-square"></i>
         </Button>
