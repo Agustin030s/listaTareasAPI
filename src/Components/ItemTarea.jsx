@@ -37,6 +37,7 @@ const ItemTarea = ({ tarea, setListaTareas, setEditar, setId, setValue, setTexto
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Eliminar",
+      cancelButtonText: "Cancelar",
     }).then(async (result) => {
       if (result.isConfirmed) {
         const respuesta = await borrarTareaAPI(tarea.id);

@@ -1,3 +1,5 @@
+import Swal from "sweetalert2";
+
 const URI_TAREA = import.meta.env.VITE_API_TAREA;
 
 export const obtenerTareaAPI = async () => {
@@ -5,7 +7,11 @@ export const obtenerTareaAPI = async () => {
     const respuesta = await fetch(URI_TAREA);
     return respuesta;
   } catch (error) {
-    console.log(error);
+    Swal.fire({
+      title: "Servicio no disponible momentaneamente",
+      text: `Sucedio el error "${error}", intentelo nuevamente en unos minutos`,
+      icon: "error",
+    });
   }
 };
 
@@ -14,7 +20,11 @@ export const obtenerTareaPorIdAPI = async (id) => {
     const respuesta = await fetch(`${URI_TAREA}/${id}`);
     return respuesta;
   } catch (error) {
-    console.log(error);
+    Swal.fire({
+      title: "API no disponible",
+      text: `Sucedio el error "${error}", intentelo nuevamente en unos minutos`,
+      icon: "error",
+    });
   }
 };
 
@@ -29,7 +39,11 @@ export const crearTareaAPI = async (tareaNueva) => {
     });
     return respuesta;
   } catch (error) {
-    console.log(error);
+    Swal.fire({
+      title: "API no disponible",
+      text: `Sucedio el error "${error}", intentelo nuevamente en unos minutos`,
+      icon: "error",
+    });
   }
 };
 
@@ -44,7 +58,11 @@ export const editarTareaAPI = async (tarea, id) => {
     });
     return respuesta;
   } catch (error) {
-    console.log(error);
+    Swal.fire({
+      title: "API no disponible",
+      text: `Sucedio el error "${error}", intentelo nuevamente en unos minutos`,
+      icon: "error",
+    });
   }
 };
 
@@ -55,6 +73,10 @@ export const borrarTareaAPI = async (id) => {
     });
     return respuesta;
   } catch (error) {
-    console.log(error);
+    Swal.fire({
+      title: "API no disponible",
+      text: `Sucedio el error "${error}", intentelo nuevamente en unos minutos`,
+      icon: "error",
+    });
   }
 };
