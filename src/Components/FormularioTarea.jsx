@@ -1,49 +1,119 @@
 import { Button, Form } from "react-bootstrap";
 import ListaTareas from "./ListaTareas";
-import { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import {
+  crearTareaAPI,
+  obtenerTareaAPI,
+  editarTareaAPI,
+} from "../helpers/queries";
+import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 const FormularioTarea = () => {
-  // [nombre del state, funcion que cambiara en state] = useState(valor inicial);
-  //Este estado es para el input, cada input debe tener un state.
-  const [tarea, setTarea] = useState("");
-  const tareasLocalStorage = JSON.parse(localStorage.getItem('listaTareas')) || [];
-  const [listaTareas, setListaTareas] = useState(tareasLocalStorage);
+  const [listaTareas, setListaTareas] = useState([]);
+  const [editar, setEditar] = useState(false);
+  const [id, setId] = useState("");
+  const [textoBoton, setTextoBoton] = useState("Agregar");
 
-  //Para ciclo de vida de un componente, para montaje y actualización
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    setValue,
+  } = useForm();
+
   useEffect(() => {
-    localStorage.setItem('listaTareas', JSON.stringify(listaTareas));
+    obtenerTareas();
   }, [listaTareas]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    //guardar el state tarea en arrayTareas
-    // ... -> operador spread
-    //[...listaTareas, tarea] realiza una copia del array original y luego al final me agrega la tarea
-    setListaTareas([...listaTareas, tarea]);
-    //limpiar el formulario
-    setTarea('');
+  const onSubmit = async (tareaNueva) => {
+    if (editar) {
+      const respuesta = await editarTareaAPI(tareaNueva, id);
+      if (respuesta.status === 200) {
+        Swal.fire({
+          title: "Tarea modificada con éxito",
+          text: "La tarea se modifico",
+          icon: "success",
+        });
+        setEditar(false);
+        setId("");
+        setTextoBoton("Agregar");
+        reset();
+      } else {
+        Swal.fire({
+          title: "Ocurrio un error",
+          text: `La tarea no pudo ser modificada, intentelo nuevamente dentro de unos minutos`,
+          icon: "error",
+        });
+      }
+    } else {
+      const respuesta = await crearTareaAPI(tareaNueva);
+      if (respuesta.status === 201) {
+        Swal.fire({
+          title: "Tarea creada",
+          text: `La tarea fue creada correctamente`,
+          icon: "success",
+        });
+        reset();
+      } else {
+        Swal.fire({
+          title: "Ocurrio un error",
+          text: `La tarea no pudo ser creada, intentelo nuevamente dentro de unos minutos`,
+          icon: "error",
+        });
+      }
+    }
   };
 
-  const borrarTarea = (nombreTarea) =>{
-    const arregloFiltrado = listaTareas.filter((tarea) => tarea !== nombreTarea);
-    setListaTareas(arregloFiltrado);
-  }
+  const obtenerTareas = async () => {
+    const respuesta = await obtenerTareaAPI();
+    if (respuesta.status === 200) {
+      const datos = await respuesta.json();
+      setListaTareas(datos);
+    } else {
+      Swal.fire({
+        title: "Ocurrio un error",
+        text: `Intenta está operación en unos minutos`,
+        icon: "error",
+      });
+    }
+  };
 
   return (
     <section>
-      <Form onSubmit={handleSubmit}>
-        <Form.Group className="mb-3 d-flex" controlId="inputTarea">
+      <Form onSubmit={handleSubmit(onSubmit)} className="mb-3">
+        <Form.Group className="d-flex" controlId="inputTarea">
           <Form.Control
             type="text"
             placeholder="Ej: Tarea 1"
             className="me-2"
-            onChange={(e) => setTarea(e.target.value)}
-            value={tarea}
+            {...register("descripcion", {
+              required: "Debe ingresar una tarea",
+              minLength: {
+                value: 4,
+                message: "Debe ingresar como minimo 5 caracteres",
+              },
+              maxLength: {
+                value: 700,
+                message: "Debe ingresar como máximo 700 caracteres",
+              },
+            })}
           />
-          <Button type="submit">Agregar</Button>
+          <Button type="submit">{textoBoton}</Button>
         </Form.Group>
+        <Form.Text className="text-danger">
+          {errors.descripcion?.message}
+        </Form.Text>
       </Form>
-      <ListaTareas listaTareas={listaTareas} borrarTarea={borrarTarea}></ListaTareas>
+      <ListaTareas
+        listaTareas={listaTareas}
+        setListaTareas={setListaTareas}
+        setEditar={setEditar}
+        setId={setId}
+        setTextoBoton={setTextoBoton}
+        setValue={setValue}
+      ></ListaTareas>
     </section>
   );
 };
