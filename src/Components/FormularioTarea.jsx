@@ -17,7 +17,7 @@ const FormularioTarea = () => {
 
   useEffect(() => {
     obtenerTareas();
-  }, []);
+  }, [listaTareas]);
 
   const onSubmit = async (tareaNueva) => {
     const respuesta = await crearTareaAPI(tareaNueva);
@@ -67,7 +67,7 @@ const FormularioTarea = () => {
           {errors.descripcion?.message}
         </Form.Text>
       </Form>
-      <ListaTareas listaTareas={listaTareas}></ListaTareas>
+      <ListaTareas listaTareas={listaTareas} setListaTareas={setListaTareas}></ListaTareas>
     </section>
   );
 };
