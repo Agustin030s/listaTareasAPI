@@ -3,6 +3,7 @@ import ListaTareas from "./ListaTareas";
 import { useForm } from "react-hook-form";
 import { crearTareaAPI, obtenerTareaAPI } from "../helpers/queries";
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 const FormularioTarea = () => {
   const [listaTareas, setListaTareas] = useState([]);
@@ -22,10 +23,18 @@ const FormularioTarea = () => {
   const onSubmit = async (tareaNueva) => {
     const respuesta = await crearTareaAPI(tareaNueva);
     if (respuesta.status === 201) {
-      alert("producto creado con exito");
+      Swal.fire({
+        title: "Tarea creada",
+        text: `La tarea fue creada correctamente`,
+        icon: "success"
+      });
       reset();
     } else {
-      alert("no se pudo crear el producto");
+      Swal.fire({
+        title: "Ocurrio un error",
+        text: `La tarea no pudo ser creada, intentelo nuevamente dentro de unos minutos`,
+        icon: "error"
+      });
     }
   };
 
@@ -35,7 +44,11 @@ const FormularioTarea = () => {
       const datos = await respuesta.json();
       setListaTareas(datos);
     } else {
-      alert("ocurrio un error");
+      Swal.fire({
+        title: "Ocurrio un error",
+        text: `Intenta está operación en unos minutos`,
+        icon: "error"
+      });
     }
   };
 
