@@ -13,7 +13,7 @@ const ListaTareas = ({
     <ListGroup>
       {listaTareas.map((tarea) => (
         <ItemTarea
-          key={tarea.id}
+          key={tarea._id}
           tarea={tarea}
           setListaTareas={setListaTareas}
           setEditar={setEditar}

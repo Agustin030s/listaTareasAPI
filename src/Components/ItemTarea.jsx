@@ -23,7 +23,7 @@ const ItemTarea = ({
     }).then(async (result) => {
       if (result.isConfirmed) {
         setEditar(true);
-        setId(tarea.id);
+        setId(tarea._id);
         setTextoBoton("Editar");
         setValue("descripcion", tarea.descripcion);
       }
@@ -42,7 +42,7 @@ const ItemTarea = ({
       cancelButtonText: "Cancelar",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const respuesta = await borrarTareaAPI(tarea.id);
+        const respuesta = await borrarTareaAPI(tarea._id);
         if (respuesta.status === 200) {
           Swal.fire({
             title: "Tarea eliminada!",
@@ -65,15 +65,15 @@ const ItemTarea = ({
       <div className="d-flex justify-content-center align-items-center flex-wrap">
         <Button
           variant="warning"
-          className="mx-md-1 mb-2 mb-md-0"
-          onClick={() => editarTarea(tarea, tarea.id)}
+          className="mx-md-1 mb-md-0 me-2"
+          onClick={() => editarTarea(tarea, tarea._id)}
         >
           <i className="bi bi-pencil-square"></i>
         </Button>
         <Button
           variant="danger"
           className="mx-md-1"
-          onClick={() => borrarTarea(tarea.id)}
+          onClick={() => borrarTarea(tarea._id)}
         >
           <i className="bi bi-trash3-fill"></i>
         </Button>
